@@ -336,8 +336,10 @@ should be running. Check the output of::
   982 /usr/bin/ibus-daemon --xim
 
 ``ibus-daemon`` should be present and *must* include ``--xim`` in the
-command line. Likewise on a system using "fcitx" the following output
-has to be expected::
+command line. If not, the daemon must be restarted with it! Consult the
+documentation of your distribution for more information.
+
+On a system using "fcitx" the following output has to be expected::
 
   XMODIFIERS=@im=fcitx
   GTK_IM_MODULE=fcitx
@@ -351,9 +353,9 @@ In this case ``fcitx`` daemon should be running as well::
 If you see *any* mixture of the above, your system is likely to be
 incorrectly configured.
 
-If the "ibus" or "fcitx" package are not installed, there are no daemons
-running and the variables are mostly empty, try simply unsetting all of
-them before running Screenkey in a terminal::
+If the "ibus" or "fcitx" packages are not installed, there are no
+daemons running and the variables are mostly empty, then try simply
+unsetting all of them before running Screenkey in a terminal::
 
   unset XMODIFIERS
   unset GTK_IM_MODULES
@@ -361,13 +363,13 @@ them before running Screenkey in a terminal::
   screenkey
 
 If screenkey runs correctly after these changes, check your startup
-files such as ``~/.profile``, ``~/.bash_profile``,
-``~/.pam_environment`` files and remove the offending variables to make
-the change permanent. You must log-out and log-in in order to be able to
-run Screenkey normally after the change.
+files such as ``~/.profile``, ``~/.bash_profile`` or
+``~/.pam_environment`` and remove the offending variables to make the
+change permanent. You must log-out and log-in in order to be able to run
+Screenkey normally after the change.
 
 If you're running either ``ibus`` or ``fcitx`` but the variables contain
-mixed values, set them manually using::
+mixed values, try to reset them manually using::
 
   export XMODIFIERS=@im=ibus
   export GTK_IM_MODULE=ibus
@@ -375,12 +377,12 @@ mixed values, set them manually using::
   screenkey
 
 Again, if Screenkey works correctly after the change, inspect the
-content of your startup files to make the change permanent.
+contents of your startup files as above to make the change permanent.
 
-You should always check the documentation of your distribution for more
-details: the above guide is not meant to be exhaustive. There are other
-subtle ways to set the input method and daemon parameters. If all else
-fails, get in touch with the authors or file an issue on Github.
+You should always check the documentation of your distribution to see
+which input method *should* be running and how it should be configured.
+The above guide is not meant to be exhaustive. If nothing works, get in
+touch with the authors or file an issue on Github to get more help.
 
 
 Cannot stop Screenkey or no status icon
@@ -405,8 +407,8 @@ The proper way to exit when running Screenkey from a terminal is simply
 by interrupting it with ``Ctrl+C``.
 
 
-No output when using GNOME Terminal in Wayland
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+No output in GNOME Terminal
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Screenkey cannot currently capture any input directed to native Wayland
 programs such as the GNOME Terminal: only X11 programs are supported.
