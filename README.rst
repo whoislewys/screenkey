@@ -382,7 +382,7 @@ contents of your startup files as above to make the change permanent.
 You should always check the documentation of your distribution to see
 which input method *should* be running and how it should be configured.
 The above guide is not meant to be exhaustive. If nothing works, get in
-touch with the authors or file an issue on Github to get more help.
+touch with the authors or file an issue on Gitlab to get more help.
 
 
 Cannot stop Screenkey or no status icon
@@ -428,7 +428,7 @@ Authors and Copyright
 
 screenkey's GIT repository is publicly accessible at:
 
-https://github.com/wavexx/screenkey
+https://gitlab.com/wavexx/screenkey
 
 
 Additional Thanks
