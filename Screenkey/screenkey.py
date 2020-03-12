@@ -445,8 +445,8 @@ class Screenkey(Gtk.Window):
                 return False
             except OSError:
                 msg = Gtk.MessageDialog(parent=self,
-                                        type=Gtk.MESSAGE_ERROR,
-                                        buttons=Gtk.BUTTONS_OK,
+                                        type=Gtk.MessageType.ERROR,
+                                        buttons=Gtk.ButtonsType.OK,
                                         message_format="Error running \"slop\"")
                 msg.format_secondary_markup(_("\"slop\" is required for interactive selection. "
                                               "See <a href=\"{url}\">{url}</a>").format(url=SLOP_URL))
