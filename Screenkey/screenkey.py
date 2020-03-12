@@ -216,6 +216,7 @@ class Screenkey(Gtk.Window):
 
         self.update_font()
 
+
     def update_geometry(self, configure=False):
         if self.options.position == 'fixed' and self.options.geometry is not None:
             self.move(*self.options.geometry[0:2])
@@ -774,7 +775,7 @@ class Screenkey(Gtk.Window):
 
 
     def make_about_dialog(self):
-        self.about = about = Gtk.AboutDialog()
+        self.about = about = Gtk.AboutDialog(use_header_bar=True)
         about.set_program_name(APP_NAME)
         about.set_version(VERSION)
         about.set_copyright("""
@@ -788,8 +789,8 @@ class Screenkey(Gtk.Window):
         about.set_website(APP_URL)
         about.set_icon_name('preferences-desktop-keyboard-shortcuts')
         about.set_logo_icon_name('preferences-desktop-keyboard-shortcuts')
-        about.connect("response", about.hide_on_delete)
-        about.connect("delete-event", about.hide_on_delete)
+        about.connect("response", lambda *_: about.hide_on_delete())
+        about.connect("delete-event", lambda *_: about.hide_on_delete())
 
 
     def on_about_dialog(self, widget, data=None):
