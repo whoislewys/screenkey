@@ -257,6 +257,8 @@ class LabelManager(object):
                     repeats = 0
 
             key_markup = key.markup
+            if type(key_markup) is bytes:
+                key_markup = key_markup.decode()
             if not recent and (stamp - key.stamp).total_seconds() < self.recent_thr:
                 recent = True
                 key_markup = '<u>' + key_markup
