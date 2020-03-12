@@ -736,12 +736,12 @@ class Screenkey(Gtk.Window):
         show_item.show()
         menu.append(show_item)
 
-        preferences_item = Gtk.ImageMenuItem(Gtk.STOCK_PREFERENCES)
+        preferences_item = Gtk.MenuItem(_("Preferences"))
         preferences_item.connect("activate", self.on_preferences_dialog)
         preferences_item.show()
         menu.append(preferences_item)
 
-        about_item = Gtk.ImageMenuItem(Gtk.STOCK_ABOUT)
+        about_item = Gtk.MenuItem(_("About"))
         about_item.connect("activate", self.on_about_dialog)
         about_item.show()
         menu.append(about_item)
@@ -750,7 +750,7 @@ class Screenkey(Gtk.Window):
         separator_item.show()
         menu.append(separator_item)
 
-        image = Gtk.ImageMenuItem(Gtk.STOCK_QUIT)
+        image = Gtk.MenuItem(_("Quit"))
         image.connect("activate", self.quit)
         image.show()
         menu.append(image)
