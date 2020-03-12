@@ -282,28 +282,29 @@ class LabelManager(object):
 
 
     def key_press(self, event):
+        symbol = event.symbol.decode()
         if event is None:
             self.logger.debug("inputlistener failure: {}".format(str(self.kl.error)))
             self.listener(None)
             return
         if event.pressed == False:
-            self.logger.debug("Key released {:5}(ks): {}".format(event.keysym, event.symbol))
+            self.logger.debug("Key released {:5}(ks): {}".format(event.keysym, symbol))
             return
-        if event.symbol in self.ignore:
-            self.logger.debug("Key ignored  {:5}(ks): {}".format(event.keysym, event.symbol))
+        if symbol in self.ignore:
+            self.logger.debug("Key ignored  {:5}(ks): {}".format(event.keysym, symbol))
             return
         if event.filtered:
-            self.logger.debug("Key filtered {:5}(ks): {}".format(event.keysym, event.symbol))
+            self.logger.debug("Key filtered {:5}(ks): {}".format(event.keysym, symbol))
         else:
             state = "repeated" if event.repeated else "pressed"
             string = repr(event.string)
             self.logger.debug("Key {:8} {:5}(ks): {} ({}, mask: {:08b})".format
-                              (state, event.keysym, string, event.symbol, event.mods_mask))
+                              (state, event.keysym, string, symbol, event.mods_mask))
 
         # Stealth enable/disable handling
         for mod in ['shift', 'ctrl', 'alt']:
             if not event.repeated and event.modifiers[mod] \
-               and event.symbol in MODS_SYMS[mod]:
+               and symbol in MODS_SYMS[mod]:
                 self.enabled = not self.enabled
                 state = 'enabled' if self.enabled else 'disabled'
                 self.logger.info("{mod}+{mod} detected: screenkey {state}".format(
@@ -312,7 +313,7 @@ class LabelManager(object):
             return False
 
         # keep the window alive as the user is composing
-        mod_pressed = keysym_to_mod(event.symbol) is not None
+        mod_pressed = keysym_to_mod(symbol) is not None
         update = len(self.data) and (event.filtered or mod_pressed)
 
         if not event.filtered:
@@ -327,6 +328,7 @@ class LabelManager(object):
 
 
     def key_normal_mode(self, event):
+        self.logger.debug("key_normal_mode")
         # Visible modifiers
         mod = ''
         for cap in ['ctrl', 'alt', 'super', 'hyper']:
@@ -334,9 +336,10 @@ class LabelManager(object):
                 mod = mod + self.replace_mods[cap]
 
         # Backspace handling
-        if event.symbol == 'BackSpace' and not self.mods_only and \
+        symbol = event.symbol.decode()
+        if symbol == 'BackSpace' and not self.mods_only and \
            mod == '' and not event.modifiers['shift']:
-            key_repl = self.replace_syms.get(event.symbol)
+            key_repl = self.replace_syms.get(symbol)
             if self.bak_mode == 'normal':
                 self.data.append(KeyData(datetime.now(), False, *key_repl))
                 return True
@@ -358,13 +361,13 @@ class LabelManager(object):
                 return True
 
         # Regular keys
-        key_repl = self.replace_syms.get(event.symbol)
+        key_repl = self.replace_syms.get(symbol)
         replaced = key_repl is not None
         if key_repl is None:
-            if keysym_to_mod(event.symbol):
+            if keysym_to_mod(symbol):
                 return False
             else:
-                repl = event.string or event.symbol
+                repl = event.string or symbol
                 markup = GLib.markup_escape_text(repl)
                 key_repl = KeyRepl(False, False, len(repl) > 1, markup)
 
@@ -376,8 +379,8 @@ class LabelManager(object):
             mod = mod + self.replace_mods['shift']
 
         # Whitespace handling
-        if not self.vis_space and mod == '' and event.symbol in WHITESPACE_SYMS:
-            if event.symbol not in ['Return', 'KP_Enter']:
+        if not self.vis_space and mod == '' and symbol in WHITESPACE_SYMS:
+            if symbol not in ['Return', 'KP_Enter']:
                 repl = event.string
             elif self.multiline:
                 repl = ''
@@ -386,7 +389,7 @@ class LabelManager(object):
             key_repl = KeyRepl(key_repl.bk_stop, key_repl.silent, key_repl.spaced, repl)
 
         # Multiline
-        if event.symbol in ['Return', 'KP_Enter'] and self.multiline == True:
+        if symbol in ['Return', 'KP_Enter'] and self.multiline == True:
             key_repl = KeyRepl(key_repl.bk_stop, key_repl.silent,
                                key_repl.spaced, key_repl.repl + '\n')
 
@@ -395,8 +398,8 @@ class LabelManager(object):
                 repl = key_repl.repl
 
                 # switches
-                if event.symbol in ['Caps_Lock', 'Num_Lock']:
-                    state = event.modifiers[event.symbol.lower()]
+                if symbol in ['Caps_Lock', 'Num_Lock']:
+                    state = event.modifiers[symbol.lower()]
                     repl += '(%s)' % (_('off') if state else _('on'))
 
                 self.data.append(KeyData(datetime.now(), False, key_repl.bk_stop,
@@ -422,12 +425,13 @@ class LabelManager(object):
                 mod = mod + self.replace_mods[cap]
 
         # keycaps
-        key_repl = self.replace_syms.get(event.symbol)
+        symbol = event.symbol.decode()
+        key_repl = self.replace_syms.get(symbol)
         if key_repl is None:
-            if keysym_to_mod(event.symbol):
+            if keysym_to_mod(symbol):
                 return False
             else:
-                repl = event.string.upper() if event.string else event.symbol
+                repl = event.string.upper() if event.string else symbol
                 markup = GLib.markup_escape_text(repl)
                 key_repl = KeyRepl(False, False, len(repl) > 1, markup)
 
@@ -435,8 +439,8 @@ class LabelManager(object):
             repl = key_repl.repl
 
             # switches
-            if event.symbol in ['Caps_Lock', 'Num_Lock']:
-                state = event.modifiers[event.symbol.lower()]
+            if symbol in ['Caps_Lock', 'Num_Lock']:
+                state = event.modifiers[symbol.lower()]
                 repl += '(%s)' % (_('off') if state else _('on'))
 
             self.data.append(KeyData(datetime.now(), False, key_repl.bk_stop,
@@ -452,9 +456,10 @@ class LabelManager(object):
 
 
     def key_keysyms_mode(self, event):
-        if event.symbol in REPLACE_SYMS:
-            value = event.symbol
+        symbol = event.symbol.decode()
+        if symbol in REPLACE_SYMS:
+            value = symbol
         else:
-            value = event.string or event.symbol
+            value = event.string or symbol
         self.data.append(KeyData(datetime.now(), True, True, True, True, value))
         return True

@@ -367,22 +367,22 @@ class Screenkey(Gtk.Window):
             self.logger.debug("Timeout value changed: %f." % self.options.timeout)
 
         def on_cbox_sizes_changed(widget, data=None):
-            self.options.font_size = FONT_SIZES[widget.props.active_id]
+            self.options.font_size = widget.props.active_id
             self.update_geometry()
             self.logger.debug("Window size changed: %s." % self.options.font_size)
 
         def on_cbox_modes_changed(widget, data=None):
-            self.options.key_mode = KEY_MODES[widget.props.active_id]
+            self.options.key_mode = widget.props.active_id
             self.on_change_mode()
             self.logger.debug("Key mode changed: %s." % self.options.key_mode)
 
         def on_cbox_bak_changed(widget, data=None):
-            self.options.bak_mode = BAK_MODES[widget.props.active_id]
+            self.options.bak_mode = widget.props.active_id
             self.on_change_mode()
             self.logger.debug("Bak mode changed: %s." % self.options.bak_mode)
 
         def on_cbox_mods_changed(widget, data=None):
-            self.options.mods_mode = MODS_MODES[widget.props.active_id]
+            self.options.mods_mode = widget.props.active_id
             self.on_change_mode()
             self.logger.debug("Mods mode changed: %s." % self.options.mods_mode)
 
@@ -402,7 +402,7 @@ class Screenkey(Gtk.Window):
             self.logger.debug("Show Whitespace changed: %s." % self.options.vis_space)
 
         def on_cbox_position_changed(widget, data=None):
-            new_position = POSITIONS[widget.props.active_id]
+            new_position = widget.props.active_id
             if self.options.position != 'fixed' and new_position == 'fixed':
                 new_geom = on_btn_sel_geom(widget)
                 if not new_geom:
@@ -488,8 +488,9 @@ class Screenkey(Gtk.Window):
             self.update_colors()
 
         def on_btn_font(widget, data=None):
-            self.options.font_desc = widget.get_font_name()
-            self.font = Pango.FontDescription(self.options.font_desc)
+            widget.props.label = widget.props.font
+            self.options.font_desc = widget.props.font
+            self.font = widget.props.font_desc
             self.update_font()
 
         frm_time = Gtk.Frame(label_widget=Gtk.Label("<b>%s</b>" % _("Time"),
@@ -577,9 +578,10 @@ class Screenkey(Gtk.Window):
 
         lbl_font = Gtk.Label(_("Font"),
                              hexpand=True, halign=START)
-        btn_font = Gtk.FontButton(self.options.font_desc)
-        btn_font.set_use_size(False)
-        btn_font.set_show_size(False)
+        btn_font = Gtk.FontButton(self.options.font_desc,
+                                  font=self.options.font_desc,
+                                  level=Gtk.FontChooserLevel.STYLE,
+                                  use_font=True, show_size=False)
         btn_font.connect("font-set", on_btn_font)
 
         lbl_sizes = Gtk.Label(_("Size"),
