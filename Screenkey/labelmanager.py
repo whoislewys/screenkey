@@ -3,10 +3,9 @@
 # Copyright(c) 2010-2012: Pablo Seminario <pabluk@gmail.com>
 # Copyright(c) 2015-2016: wave++ "Yuri D'Elia" <wavexx@thregr.org>.
 
-from __future__ import print_function, unicode_literals, absolute_import, generators
-
 from .inputlistener import InputListener, InputType
-import glib
+
+from gi.repository import GLib
 
 from collections import namedtuple
 from datetime import datetime
@@ -193,21 +192,21 @@ class LabelManager(object):
         for c in repl:
             # no replacement data
             if type(c) != ReplData:
-                return unicode(glib.markup_escape_text(c))
+                return GLib.markup_escape_text(c)
 
             # plain suffix
             if c.suffix is None:
                 sfx = ''
             else:
-                sfx = unicode(glib.markup_escape_text(c.suffix))
+                sfx = GLib.markup_escape_text(c.suffix)
 
             if c.font is None:
                 # regular font
-                return unicode(glib.markup_escape_text(c.value)) + sfx;
+                return GLib.markup_escape_text(c.value) + sfx;
             elif c.font in self.font_families:
                 # custom symbol
                 return '<span font_family="' + c.font + '" font_weight="regular">' + \
-                    unicode(glib.markup_escape_text(c.value)) + '</span>' + sfx;
+                    GLib.markup_escape_text(c.value) + '</span>' + sfx;
 
 
     def update_replacement_map(self):
@@ -364,7 +363,7 @@ class LabelManager(object):
                 return False
             else:
                 repl = event.string or event.symbol
-                markup = unicode(glib.markup_escape_text(repl))
+                markup = GLib.markup_escape_text(repl)
                 key_repl = KeyRepl(False, False, len(repl) > 1, markup)
 
         if event.modifiers['shift'] and \
@@ -427,7 +426,7 @@ class LabelManager(object):
                 return False
             else:
                 repl = event.string.upper() if event.string else event.symbol
-                markup = unicode(glib.markup_escape_text(repl))
+                markup = GLib.markup_escape_text(repl)
                 key_repl = KeyRepl(False, False, len(repl) > 1, markup)
 
         if mod == '':

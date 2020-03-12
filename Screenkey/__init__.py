@@ -1,5 +1,7 @@
+from collections.abc import MutableMapping
+
 import gettext
-gettext.install('screenkey', unicode=True)
+gettext.install('screenkey')
 
 # Screenkey version
 APP_NAME = "Screenkey"
@@ -46,9 +48,30 @@ MODS_MODES = {
     'tux': _('Linux'),
 }
 
-class Options(dict):
-    def __getattr__(self, k):
-        return self[k]
+class Options(MutableMapping):
+    def __init__(self, *args, **kw):
+        self.__dict__['_store'] = dict(*args, **kw)
 
-    def __setattr__(self, k, v):
-        self[k] = v
+    def __getitem__(self, key):
+        return self._store[key]
+    
+    def __setitem__(self, key, value):
+        self._store[key] = value
+    
+    def __delitem__(self, key):
+        del self._store[key]
+
+    def __iter__(self):
+        return iter(self._store)
+
+    def __len__(self):
+        return len(self._store)
+
+    def __getattr__(self, key):
+        return self._store[key]
+
+    def __setattr__(self, key, value):
+        self._store[key] = value
+
+    def __delattr__(self, key):
+        del self._store[key]

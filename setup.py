@@ -30,8 +30,8 @@ setup(name='screenkey', version='0.9',
 
       scripts=['screenkey'],
       packages=['Screenkey'],
-      setup_requires=['setuptools', 'python-distutils-extra'],
-      install_requires=['PyGTK', 'pycairo'],
+      setup_requires=['setuptools'],
+      install_requires=['PyGObject', 'pycairo'],
       data_files=[('share/applications', ['data/screenkey.desktop']),
                   ('share/doc/screenkey', ['README.rst', 'NEWS.rst'])],
 )
