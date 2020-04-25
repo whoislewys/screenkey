@@ -236,7 +236,10 @@ class Screenkey(Gtk.Window):
             window_height = 12 * area_geometry[3] // 100
         else:
             window_height = 8 * area_geometry[3] // 100
-        self.resize(area_geometry[2], window_height)
+
+        window_width = 3 * area_geometry[2] / 4 # characters take up 75% of screen
+        print('wind width: ', window_width)
+        self.resize(window_width, window_height)
 
         if self.options.position == 'top':
             window_y = area_geometry[1] + area_geometry[3] // 10
@@ -244,7 +247,13 @@ class Screenkey(Gtk.Window):
             window_y = area_geometry[1] + area_geometry[3] // 2 - window_height // 2
         else:
             window_y = area_geometry[1] + area_geometry[3] * 9 // 10 - window_height
-        self.move(area_geometry[0], window_y)
+        
+        # TODO: if i decide to care about contrib uting to this,
+        # make this a configurable setting like font size
+        # (probably shouldnt care i have a lot of toher shit to wokr on for dat $$$$)
+        window_x = (area_geometry[2] - window_width) / 2
+        print('window x', window_x)
+        self.move(window_x, window_y)
         self.update_font()
 
 
