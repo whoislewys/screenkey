@@ -237,7 +237,7 @@ class Screenkey(Gtk.Window):
         else:
             window_height = 8 * area_geometry[3] // 100
 
-        window_width = 3 * area_geometry[2] / 4 # characters take up 75% of screen
+        window_width = 1 * area_geometry[2] / 3 # characters take up 1/4th of screen
         print('wind width: ', window_width)
         self.resize(window_width, window_height)
 
