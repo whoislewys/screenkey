@@ -1,4 +1,0 @@
-#!/usr/bin/python3
-# EASY-INSTALL-SCRIPT: 'screenkey==0.9','screenkey'
-__requires__ = 'screenkey==0.9'
-__import__('pkg_resources').run_script('screenkey==0.9', 'screenkey')
