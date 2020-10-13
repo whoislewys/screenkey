@@ -30,11 +30,13 @@ Execute without installation::
 
 To install::
 
-  sudo python3 ./setup.py install
+  `python3 setup.py install`
 
 Dependencies:
 
-- Python 2.7 (no Python 3 support yet)
+- Python 3.7
+- cairo (`sudo apt-get install -y libcairo2-dev`)
+- libGI (`sudo apt install libgirepository1.0-dev`)
 - PyGTK
 - Pycairo
 - setuptools (build only)
@@ -50,6 +52,10 @@ Install dependencies (on Debian/Ubuntu)::
 You can also install "screenkey" via ArchLinux's AUR package:
 
 https://aur.archlinux.org/packages/screenkey
+
+Toggle to enable/disable
+--------
+`Shift+Shift` (left and right shift simultaneously)
 
 
 Settings
