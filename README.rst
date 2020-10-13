@@ -30,7 +30,7 @@ Execute without installation::
 
 To install::
 
-  sudo ./setup.py install
+  sudo python3 ./setup.py install
 
 Dependencies:
 
