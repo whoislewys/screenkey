@@ -48,7 +48,7 @@ class Screenkey(Gtk.Window):
         self.logger = logger
 
         defaults = Options({'no_systray': False,
-                            'timeout': 2.5,
+                            'timeout': 1.0,
                             'recent_thr': 0.1,
                             'compr_cnt': 3,
                             'ignore': [],
@@ -58,7 +58,7 @@ class Screenkey(Gtk.Window):
                             'font_size': 'medium',
                             'font_color': 'white',
                             'bg_color': 'black',
-                            'opacity': 0.8,
+                            'opacity': 0.3,
                             'key_mode': 'composed',
                             'bak_mode': 'baked',
                             'mods_mode': 'normal',
